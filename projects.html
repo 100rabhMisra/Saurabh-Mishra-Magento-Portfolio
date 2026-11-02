@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects | Saurabh Kumar Mishra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="projects-page">
+    <video class="bg-video" autoplay muted loop playsinline aria-hidden="true">
+      <source src="assets/background-video.mp4" type="video/mp4" />
+    </video>
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a href="index.html" class="brand">
+          <span class="brand-profile">
+            <img src="assets/profile.jpg" alt="Saurabh Kumar Mishra" />
+            <span class="brand-status" aria-label="Available"></span>
+          </span>
+          <span class="brand-details">
+            <span class="brand-name">
+              Saurabh M.
+              <svg class="verified-mark" viewBox="0 0 24 24" aria-label="Verified">
+                <circle cx="12" cy="12" r="10" fill="#3b82f6"></circle>
+                <path d="M7.4 12.3 10.5 15.4 16.8 9.1" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+            <span class="brand-location">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11Z" fill="none" stroke="currentColor" stroke-width="1.8"></path>
+                <circle cx="12" cy="10" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"></circle>
+              </svg>
+              <span>New Delhi, India</span>
+              <span class="brand-time-separator">—</span>
+              <span class="brand-local-time" data-local-time>12:45 am local time</span>
+            </span>
+          </span>
+        </a>
+
+        <nav class="main-nav" id="mainNav">
+          <a href="index.html#about">About</a>
+          <a href="index.html#expertise">Expertise</a>
+          <a href="index.html#experience">Experience</a>
+          <a href="projects.html" class="active-link">Projects</a>
+          <a href="index.html#certifications">Certifications</a>
+          <a href="index.html#contact">Contact</a>
+        </nav>
+
+        <a
+          href="download/Saurabh-Kumar-Mishra-Resume.pdf"
+          class="btn btn-primary nav-btn"
+          target="_blank"
+          rel="noreferrer"
+          download
+        >
+          Download Resume
+        </a>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <main class="projects-main">
+      <section class="section projects-hero">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Selected Work</p>
+            <h2>Project Portfolio</h2>
+          </div>
+
+          <div id="projectGrid" class="project-grid"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-wrap">
+        <p>© <span id="year"></span> Saurabh Kumar Mishra. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="index.html#about">About</a>
+          <a href="index.html#experience">Experience</a>
+          <a href="projects.html">Projects</a>
+          <a href="index.html#contact">Contact</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+      const projects = [
+        {
+          name: "Brick House Nutrition",
+          url: "https://brickhousenutrition.com/",
+          tag: "Nutrition Brand",
+          technologies: ["Adobe Commerce", "JavaScript", "HTML", "CSS"],
+          images: [
+            { src: "assets/brickhouse-nutrition.png", alt: "Brick House Nutrition website preview" }
+          ]
+        },
+        {
+          name: "Birchbury",
+          url: "https://birchbury.com/",
+          tag: "Lifestyle Brand",
+          technologies: ["Shopify", "HTML", "CSS", "JavaScript"],
+          images: [
+            { src: "assets/birchbury-collection.png", alt: "Birchbury barefoot shoes collection" },
+            { src: "assets/birchbury-brand.png", alt: "Birchbury brand card" }
+          ]
+        },
+        {
+          name: "Once Again Home",
+          url: "https://www.onceagainhome.com/",
+          tag: "Retail & Home",
+          technologies: ["Shopify", "Liquid", "JavaScript", "CSS"],
+          images: [
+            { src: "assets/once-again-home.png", alt: "Once Again Home website preview" }
+          ]
+        },
+        {
+          name: "Jaipur Living",
+          url: "https://www.jaipurliving.com/",
+          tag: "Home Décor",
+          technologies: ["E-commerce", "JavaScript", "HTML", "CSS"],
+          images: [
+            { src: "assets/jaipur-living.png", alt: "Jaipur Living website preview" }
+          ]
+        },
+        {
+          name: "HON",
+          url: "https://www.hon.com/",
+          tag: "Office Solutions",
+          images: [
+            { src: "assets/hon.png", alt: "HON office furniture website preview" }
+          ]
+        },
+        {
+          name: "Allsteel",
+          url: "https://www.allsteeloffice.com/",
+          tag: "Office Furniture",
+          images: [{ src: "assets/allsteel.png", alt: "Allsteel office furniture website preview" }]
+        },
+        {
+          name: "Zooxae",
+          url: "https://zooxae.com/",
+          tag: "Consumer Brand",
+          images: [{ src: "assets/zooxae.png", alt: "Zooxae aquatic plants website preview" }]
+        },
+        {
+          name: "Dentalkart",
+          url: "https://www.dentalkart.com/",
+          tag: "Healthcare",
+          images: [{ src: "assets/dentalkart.png", alt: "Dentalkart dental products website preview" }]
+        },
+        {
+          name: "Asort",
+          url: "https://asort.com/",
+          tag: "Commerce Platform",
+          images: [{ src: "assets/asort.png", alt: "Asort commerce platform website preview" }]
+        },
+        {
+          name: "Ronati",
+          url: "https://ronati.com/",
+          tag: "Fashion Brand",
+          images: [{ src: "assets/ronati.png", alt: "Ronati inventory platform website preview" }]
+        },
+        { name: "Vajor", url: "http://vajor.com/", tag: "Fashion & Lifestyle" },
+        {
+          name: "Healthstores",
+          url: "https://healthstores.in/",
+          tag: "Healthcare",
+          images: [{ src: "assets/healthstores.png", alt: "Healthstores website preview" }]
+        },
+        {
+          name: "Gullybaba",
+          url: "https://www.gullybaba.com/",
+          tag: "Digital Commerce",
+          images: [{ src: "assets/gullybaba.png", alt: "Gullybaba website preview" }]
+        },
+        {
+          name: "Victory Food",
+          url: "https://www.victoryfood.net/",
+          tag: "Food Brand",
+          images: [{ src: "assets/victory-food.png", alt: "Victory Food website preview" }]
+        },
+        {
+          name: "Disha Publication",
+          url: "https://dishapublication.com/",
+          tag: "Publishing",
+          images: [{ src: "assets/disha-publication.png", alt: "Disha Publication website preview" }]
+        },
+        {
+          name: "Indian Nuts",
+          url: "https://www.indianuts.com/",
+          tag: "Food & Retail",
+          images: [{ src: "assets/indian-nuts.png", alt: "Indian Nuts website preview" }]
+        },
+        {
+          name: "Pepperfry",
+          url: "https://www.pepperfry.com/",
+          tag: "Furniture & Lifestyle",
+          images: [{ src: "assets/pepperfry.png", alt: "Pepperfry furniture website preview" }]
+        }
+      ];
+
+      const projectGrid = document.getElementById("projectGrid");
+
+      projects.forEach((project) => {
+        const card = document.createElement("a");
+        card.className = "project-card";
+        card.href = project.url;
+        card.target = "_blank";
+        card.rel = "noopener noreferrer";
+        card.setAttribute("aria-label", `Visit ${project.name}`);
+
+        if (!project.images?.length) {
+          card.classList.add("project-card-no-image");
+        }
+
+        const preview = project.images?.length
+          ? `<span class="project-card-preview"><img class="project-card-image" src="${project.images[0].src}" alt="${project.images[0].alt || project.name}" /></span>`
+          : "";
+
+        card.innerHTML = `${preview}<h3>${project.name}</h3>`;
+
+        card.querySelector(".project-card-image")?.addEventListener("error", (event) => {
+          event.currentTarget.closest(".project-card-preview")?.remove();
+          card.classList.add("project-card-no-image");
+        });
+        projectGrid.appendChild(card);
+      });
+    </script>
+  </body>
+</html>
