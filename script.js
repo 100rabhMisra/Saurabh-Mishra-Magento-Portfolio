@@ -117,3 +117,111 @@ if (documentPasswordForm) {
     documentFolder.hidden = false;
   });
 }
+
+const contactForm = document.getElementById("form");
+const contactFormStatus = document.getElementById("contactFormStatus");
+
+if (contactForm) {
+  const submitButton = contactForm.querySelector('button[type="submit"]');
+  const emailInput = contactForm.elements.email;
+  const phoneInput = contactForm.elements.phone;
+  const messageInput = contactForm.elements.message;
+  const replyToInput = document.getElementById("replyToInput");
+  const messageWordCount = document.getElementById("messageWordCount");
+
+  const getWordCount = (value) => {
+    const words = value.trim().match(/\S+/g);
+    return words ? words.length : 0;
+  };
+
+  phoneInput?.addEventListener("input", () => {
+    phoneInput.setCustomValidity("");
+  });
+
+  messageInput?.addEventListener("input", () => {
+    const words = messageInput.value.trim().match(/\S+/g) || [];
+    if (words.length > 500) {
+      messageInput.value = words.slice(0, 500).join(" ");
+    }
+    const count = getWordCount(messageInput.value);
+    if (messageWordCount) messageWordCount.textContent = `${count} / 500 words`;
+  });
+
+  emailInput?.addEventListener("input", () => {
+    if (replyToInput) replyToInput.value = emailInput.value;
+  });
+
+  contactForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const emailIsValid = emailInput?.value ? emailInput.validity.valid : false;
+    const phoneDigits = phoneInput?.value.replace(/\D/g, "") || "";
+    const phoneIsValid = phoneDigits.length >= 8 && phoneDigits.length <= 15;
+
+    if (!emailIsValid) {
+      emailInput?.reportValidity();
+      return;
+    }
+    if (!phoneInput?.value.trim()) {
+      phoneInput.setCustomValidity("Phone number is required.");
+      phoneInput.reportValidity();
+      phoneInput.focus();
+      return;
+    }
+    if (!phoneIsValid) {
+      phoneInput?.setCustomValidity("Enter a valid phone number containing 8 to 15 digits.");
+      phoneInput?.reportValidity();
+      phoneInput?.addEventListener("input", () => phoneInput.setCustomValidity(""), { once: true });
+      return;
+    }
+    phoneInput?.setCustomValidity("");
+
+    if (getWordCount(messageInput?.value || "") > 500) {
+      if (messageWordCount) messageWordCount.textContent = "Please limit your message to 500 words.";
+      messageInput?.focus();
+      return;
+    }
+
+    const originalText = submitButton?.textContent || "Send Message";
+    if (submitButton) {
+      submitButton.textContent = "Sending...";
+      submitButton.disabled = true;
+    }
+    if (contactFormStatus) contactFormStatus.textContent = "";
+
+    const formData = new FormData(contactForm);
+    if (emailInput?.value.trim() && replyToInput) {
+      replyToInput.value = emailInput.value.trim();
+      formData.set("replyto", emailInput.value.trim());
+    }
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        if (contactFormStatus) {
+          contactFormStatus.textContent = "Success! Your message has been sent.";
+        }
+        contactForm.reset();
+        if (messageWordCount) messageWordCount.textContent = "0 / 500 words";
+      } else {
+        if (contactFormStatus) {
+          contactFormStatus.textContent = `Error: ${data.message || "Unable to send your message."}`;
+        }
+      }
+    } catch (error) {
+      if (contactFormStatus) {
+        contactFormStatus.textContent = "Something went wrong. Please try again.";
+      }
+    } finally {
+      if (submitButton) {
+        submitButton.textContent = originalText;
+        submitButton.disabled = false;
+      }
+    }
+  });
+}

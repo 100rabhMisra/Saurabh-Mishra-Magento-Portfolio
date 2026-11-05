@@ -717,7 +717,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 40px;
   padding: 30px 36px;
   border-radius: 26px;
   background: linear-gradient(135deg, rgba(20, 36, 52, 0.96), rgba(10, 18, 28, 0.96));
@@ -725,9 +725,22 @@ main {
   box-shadow: var(--shadow);
 }
 
+.cta-box > div {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.cta-box > .btn {
+  flex: 0 0 auto;
+  align-self: center;
+  min-width: 240px;
+  white-space: nowrap;
+}
+
 .cta-box h2 {
   font-size: clamp(1.8rem, 2vw, 2.6rem);
   line-height: 1.2;
+  max-width: 760px;
 }
 
 .contact-wrap {
@@ -778,6 +791,12 @@ main {
   font-weight: 600;
 }
 
+.contact-form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
 .contact-form input,
 .contact-form textarea {
   width: 100%;
@@ -794,6 +813,30 @@ main {
 .contact-form textarea:focus {
   border-color: rgba(142, 195, 255, 0.8);
   box-shadow: 0 0 0 3px rgba(142, 195, 255, 0.1);
+}
+
+.contact-honeypot {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.message-word-count {
+  justify-self: end;
+  margin-top: -2px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.contact-form-status {
+  min-height: 24px;
+  color: var(--primary);
+  font-size: 0.88rem;
+  font-weight: 600;
 }
 
 .whatsapp-float {
@@ -889,6 +932,108 @@ main {
 
 .projects-hero {
   padding-top: 80px;
+}
+
+.project-carousel {
+  position: relative;
+  height: 410px;
+  margin: 48px 0 28px;
+  overflow: hidden;
+  perspective: 1100px;
+  cursor: grab;
+  border-radius: 28px;
+  border: 1px solid rgba(142, 195, 255, 0.12);
+  background:
+    radial-gradient(circle at 50% 55%, rgba(105, 217, 255, 0.13), transparent 25%),
+    linear-gradient(180deg, rgba(16, 31, 49, 0.58), rgba(6, 12, 27, 0.82));
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.project-carousel:active {
+  cursor: grabbing;
+}
+
+.project-carousel-stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transform-style: preserve-3d;
+}
+
+.project-carousel-track {
+  position: relative;
+  width: 300px;
+  height: 210px;
+  transform-style: preserve-3d;
+  transform: rotateY(var(--carousel-rotation, 0deg));
+  transition: transform 0.7s cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.project-carousel-track.is-animating {
+  transition: none;
+}
+
+.project-carousel-card {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid rgba(142, 195, 255, 0.32);
+  background: #101827;
+  box-shadow: 0 22px 38px rgba(0, 0, 0, 0.48), 0 0 28px rgba(105, 217, 255, 0.08);
+  transform: rotateY(calc(var(--carousel-index) * var(--carousel-angle))) translateZ(var(--carousel-radius));
+  backface-visibility: hidden;
+}
+
+.project-carousel-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.project-carousel-fade {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  bottom: 0;
+  width: 18%;
+  pointer-events: none;
+}
+
+.project-carousel-fade-left {
+  left: 0;
+  background: linear-gradient(90deg, rgba(5, 9, 23, 0.94), transparent);
+}
+
+.project-carousel-fade-right {
+  right: 0;
+  background: linear-gradient(-90deg, rgba(5, 9, 23, 0.94), transparent);
+}
+
+.project-carousel-dots {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: 18px;
+  display: flex;
+  gap: 7px;
+  transform: translateX(-50%);
+}
+
+.carousel-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(210, 225, 255, 0.28);
+  box-shadow: 0 0 10px transparent;
+}
+
+.carousel-dot.is-active {
+  width: 18px;
+  background: var(--primary);
+  box-shadow: 0 0 12px rgba(105, 217, 255, 0.8);
 }
 
 .project-grid {
@@ -1413,6 +1558,26 @@ body.modal-open {
     white-space: normal;
     font-size: 1.25rem;
   }
+
+  .contact-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .project-carousel {
+    height: 320px;
+    margin-top: 32px;
+    border-radius: 20px;
+  }
+
+  .project-carousel-track {
+    width: 210px;
+    height: 145px;
+  }
+
+  .project-carousel-fade {
+    width: 9%;
+  }
+
 
   .brand-profile,
   .brand-profile img {

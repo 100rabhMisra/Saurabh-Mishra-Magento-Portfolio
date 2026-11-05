@@ -79,6 +79,15 @@
           </div>
 
           <div id="projectGrid" class="project-grid"></div>
+
+          <div class="project-carousel" aria-label="Rotating project previews">
+            <div class="project-carousel-fade project-carousel-fade-left"></div>
+            <div class="project-carousel-fade project-carousel-fade-right"></div>
+            <div class="project-carousel-stage">
+              <div id="projectCarouselTrack" class="project-carousel-track"></div>
+            </div>
+            <div class="project-carousel-dots" aria-hidden="true"></div>
+          </div>
         </div>
       </section>
     </main>
@@ -213,6 +222,100 @@
       ];
 
       const projectGrid = document.getElementById("projectGrid");
+      const carouselTrack = document.getElementById("projectCarouselTrack");
+      const carousel = document.querySelector(".project-carousel");
+      const carouselProjects = projects.filter((project) => project.images?.length);
+
+      if (carouselTrack && carouselProjects.length) {
+        const carouselCount = carouselProjects.length;
+        const carouselAngle = 360 / carouselCount;
+        const carouselRadius = window.innerWidth <= 760 ? 300 : window.innerWidth <= 980 ? 360 : 430;
+
+        carouselTrack.style.setProperty("--carousel-angle", `${carouselAngle}deg`);
+        carouselTrack.style.setProperty("--carousel-radius", `${carouselRadius}px`);
+
+        carouselProjects.forEach((project, index) => {
+          const card = document.createElement("a");
+          card.className = "project-carousel-card";
+          card.href = project.url;
+          card.target = "_blank";
+          card.rel = "noopener noreferrer";
+          card.style.setProperty("--carousel-index", index);
+          card.setAttribute("aria-label", `Visit ${project.name}`);
+          card.innerHTML = `<img src="${project.images[0].src}" alt="${project.images[0].alt || project.name}" />`;
+          carouselTrack.appendChild(card);
+        });
+
+        let rotation = 0;
+        let dragStartX = 0;
+        let dragStartRotation = 0;
+        let isDragging = false;
+        let paused = false;
+        let lastTime = performance.now();
+
+        const renderRotation = () => {
+          carouselTrack.style.setProperty("--carousel-rotation", `${rotation}deg`);
+        };
+
+        const rotateBy = (direction) => {
+          rotation += direction * carouselAngle;
+          renderRotation();
+        };
+
+        const dotsContainer = document.querySelector(".project-carousel-dots");
+        if (dotsContainer) {
+          carouselProjects.forEach((project, index) => {
+            const dot = document.createElement("span");
+            dot.className = index === 0 ? "carousel-dot is-active" : "carousel-dot";
+            dot.title = project.name;
+            dotsContainer.appendChild(dot);
+          });
+        }
+
+        carousel.addEventListener("mouseenter", () => { paused = true; });
+        carousel.addEventListener("mouseleave", () => { paused = false; });
+        carousel.addEventListener("focusin", () => { paused = true; });
+        carousel.addEventListener("focusout", () => { paused = false; });
+
+        carousel.addEventListener("pointerdown", (event) => {
+          isDragging = true;
+          dragStartX = event.clientX;
+          dragStartRotation = rotation;
+          carouselTrack.classList.add("is-animating");
+          carousel.setPointerCapture(event.pointerId);
+        });
+
+        carousel.addEventListener("pointermove", (event) => {
+          if (!isDragging) return;
+          rotation = dragStartRotation + (event.clientX - dragStartX) * 0.35;
+          renderRotation();
+        });
+
+        const stopDragging = (event) => {
+          if (!isDragging) return;
+          isDragging = false;
+          carouselTrack.classList.remove("is-animating");
+          if (carousel.hasPointerCapture(event.pointerId)) {
+            carousel.releasePointerCapture(event.pointerId);
+          }
+        };
+
+        carousel.addEventListener("pointerup", stopDragging);
+        carousel.addEventListener("pointercancel", stopDragging);
+
+        const animateCarousel = (time) => {
+          const delta = Math.min(time - lastTime, 50);
+          lastTime = time;
+          if (!paused && !isDragging && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            rotation += delta * 0.004;
+            renderRotation();
+          }
+          requestAnimationFrame(animateCarousel);
+        };
+
+        renderRotation();
+        requestAnimationFrame(animateCarousel);
+      }
 
       projects.forEach((project) => {
         const card = document.createElement("a");

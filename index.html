@@ -498,30 +498,49 @@
 
           <form
             class="contact-form"
-            action="https://formsubmit.co/naksh.misra@gmail.com"
-            method="POST"
-            enctype="text/plain"
+            id="form"
           >
-            <input type="hidden" name="_subject" value="New Portfolio Inquiry" />
-            <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="access_key" value="d4b2da1f-337d-497a-998b-3e54069d89c3" />
+            <input type="hidden" name="subject" value="New Portfolio Inquiry" />
+            <input type="hidden" name="from_name" value="Saurabh Portfolio" />
+            <input type="hidden" name="replyto" value="" id="replyToInput" />
+            <input type="hidden" name="template" value="table" />
+            <input type="checkbox" name="botcheck" class="contact-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
             <label>
               Name
               <input type="text" name="name" placeholder="Your Name" required />
             </label>
 
-            <label>
-              Email
-              <input type="email" name="email" placeholder="Your Email" required />
-            </label>
+            <div class="contact-form-row">
+              <label>
+                Email
+                <input type="email" name="email" placeholder="Your Email" autocomplete="email" maxlength="254" required />
+              </label>
+
+              <label>
+                Phone Number
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="+91 98765 43210"
+                  autocomplete="tel"
+                  pattern="[+]?[0-9][0-9 ()-]{7,18}[0-9]"
+                  title="Enter a valid phone number, such as +91 98765 43210"
+                  maxlength="20"
+                  required
+                />
+              </label>
+            </div>
 
             <label>
               Message
               <textarea name="message" rows="5" placeholder="Tell me about your requirement..." required></textarea>
+              <span class="message-word-count" id="messageWordCount">0 / 500 words</span>
             </label>
 
             <button type="submit" class="btn btn-primary">Send Message</button>
+            <p class="contact-form-status" id="contactFormStatus" role="status" aria-live="polite"></p>
           </form>
         </div>
       </section>
