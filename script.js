@@ -29,6 +29,32 @@ if (yearEl) {
   yearEl.textContent = new Date().getFullYear();
 }
 
+const profileCard = document.querySelector(".profile-card");
+
+if (profileCard && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  profileCard.addEventListener("pointermove", (event) => {
+    if (event.pointerType === "touch") return;
+
+    const bounds = profileCard.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width;
+    const y = (event.clientY - bounds.top) / bounds.height;
+    const rotateX = (0.5 - y) * 10;
+    const rotateY = (x - 0.5) * 12;
+
+    profileCard.style.setProperty("--profile-rotate-x", `${rotateX}deg`);
+    profileCard.style.setProperty("--profile-rotate-y", `${rotateY}deg`);
+    profileCard.style.setProperty("--profile-light-x", `${x * 100}%`);
+    profileCard.style.setProperty("--profile-light-y", `${y * 100}%`);
+  });
+
+  profileCard.addEventListener("pointerleave", () => {
+    profileCard.style.setProperty("--profile-rotate-x", "0deg");
+    profileCard.style.setProperty("--profile-rotate-y", "0deg");
+    profileCard.style.setProperty("--profile-light-x", "50%");
+    profileCard.style.setProperty("--profile-light-y", "50%");
+  });
+}
+
 function updateLocalTime() {
   document.querySelectorAll("[data-local-time]").forEach((element) => {
     const time = new Intl.DateTimeFormat("en-US", {
